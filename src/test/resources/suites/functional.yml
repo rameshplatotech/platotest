@@ -1,9 +1,0 @@
-name: "Functional Tests"
-base_url: "https://example.com/login"
-thread_count: 3
-parallel: methods
-tests:
-  - name: "Login and Dashboard Tests"
-    classes:
-      - LoginTest
-      - DashboardTest

@@ -2,8 +2,3 @@
 BasePage:
   locator: "locators/basepage.yml"
   testdata: "testdata/basepage-en-data.yml"
-
-LoginPage:
-  locator: "locators/login.yml"
-  testdata: "testdata/login.yml"
-

@@ -1,8 +1,0 @@
-name: "Smoke Tests"
-base_url: "https://example.com/login"
-thread_count: 2
-parallel: methods
-tests:
-  - name: "Login Tests"
-    classes:
-      - LoginTest
