@@ -29,7 +29,7 @@ jobs:
       run: mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install"
     
     - name: Run tests with Maven
-      run: mvn clean test -Dbrowser=${{ matrix.browser }} -Dheadless=true
+      run: mvn clean test -DsuiteXmlFile=src/test/resources/suites/googlesearch-suite.xml -Dbrowser=${{ matrix.browser }} -Dheadless=true
       env:
         MAVEN_OPTS: "-Xmx1024m"
     
