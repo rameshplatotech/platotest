@@ -34,4 +34,50 @@ public class WebSelect {
     public boolean isVisible() {
         return locator.isVisible();
     }
+
+    /**
+     * Target a specific select instance when locator matches multiple.
+     */
+    public WebSelect nth(int index) {
+        return new WebSelect(locator.nth(index));
+    }
+
+    /**
+     * Access the underlying Locator for helper methods not exposed here.
+     */
+    public Locator getLocator() {
+        return locator;
+    }
+
+    public String getValue() {
+        return locator.inputValue();
+    }
+
+    public List<String> getSelectedValues() {
+        return locator.selectOption();
+    }
+
+    public void focus() {
+        locator.focus();
+    }
+
+    public void hover() {
+        locator.hover();
+    }
+
+    public boolean isEnabled() {
+        return locator.isEnabled();
+    }
+
+    public void waitFor() {
+        locator.waitFor();
+    }
+
+    public String getAttribute(String name) {
+        return locator.getAttribute(name);
+    }
+
+    public void scrollIntoView() {
+        locator.scrollIntoViewIfNeeded();
+    }
 }

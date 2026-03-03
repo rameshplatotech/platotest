@@ -19,4 +19,38 @@ public class WebRadio {
     public boolean isSelected() {
         return locator.isChecked();
     }
+
+    /**
+     * Target a specific radio button by index.
+     */
+    public WebRadio nth(int index) {
+        return new WebRadio(locator.nth(index));
+    }
+
+    /**
+     * Return the underlying Locator for advanced helpers.
+     */
+    public Locator getLocator() {
+        return locator;
+    }
+
+    public boolean isVisible() {
+        return locator.isVisible();
+    }
+
+    public boolean isEnabled() {
+        return locator.isEnabled();
+    }
+
+    public void hover() {
+        locator.hover();
+    }
+
+    public void focus() {
+        locator.focus();
+    }
+
+    public void waitFor() {
+        locator.waitFor();
+    }
 }

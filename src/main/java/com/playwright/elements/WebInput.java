@@ -12,12 +12,14 @@ public class WebInput {
         this.locator = locator;
     }
 
-    public void fill(String text) {
+    public WebInput fill(String text) {
         locator.fill(text);
+        return this;
     }
 
-    public void clear() {
+    public WebInput clear() {
         locator.fill("");
+        return this;
     }
 
     public String getValue() {
@@ -30,5 +32,43 @@ public class WebInput {
 
     public void pressEnter() {
         locator.press("Enter");
+    }
+
+    /**
+     * Allow targeting a specific input when multiple matches exist.
+     */
+    public WebInput nth(int index) {
+        return new WebInput(locator.nth(index));
+    }
+
+    /**
+     * Expose the Locator when callers need Playwright features not wrapped here.
+     */
+    public Locator getLocator() {
+        return locator;
+    }
+
+    public void type(String text) {
+        locator.type(text);
+    }
+
+    public void press(String key) {
+        locator.press(key);
+    }
+
+    public void focus() {
+        locator.focus();
+    }
+
+    public void hover() {
+        locator.hover();
+    }
+
+    public boolean isEnabled() {
+        return locator.isEnabled();
+    }
+
+    public void waitFor() {
+        locator.waitFor();
     }
 }
