@@ -1,0 +1,71 @@
+name: Playwright Java Automation Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        java-version: [ 11, 17 ]
+        browser: [ chromium, firefox, webkit ]
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up JDK ${{ matrix.java-version }}
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ matrix.java-version }}
+        distribution: 'temurin'
+        cache: maven
+    
+    - name: Install Playwright Browsers
+      run: mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install"
+    
+    - name: Run tests with Maven
+      run: mvn clean test -Dbrowser=${{ matrix.browser }} -Dheadless=true
+      env:
+        MAVEN_OPTS: "-Xmx1024m"
+    
+    - name: Generate Allure Report
+      if: always()
+      run: mvn allure:report
+    
+    - name: Upload Allure Results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: allure-results-${{ matrix.java-version }}-${{ matrix.browser }}
+        path: allure-results/
+    
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results-${{ matrix.java-version }}-${{ matrix.browser }}
+        path: target/surefire-reports/
+
+  publish-report:
+    runs-on: ubuntu-latest
+    if: always()
+    needs: test
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
+    
+    - name: Publish Allure Report to GitHub Pages
+      uses: simple-elf/allure-report-action@master
+      if: always()
+      with:
+        allure_results: allure-results
+        allure_history: allure-history
+        keep_reports: 20

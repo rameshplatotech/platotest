@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Playwright Automation Suite" parallel="methods" thread-count="3" verbose="2">
+
+    <listeners>
+        <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+    </listeners>
+
+    <!-- Smoke Test Suite -->
+    <test name="Smoke Tests" parallel="methods" thread-count="2">
+        <classes>
+            <class name="com.playwright.tests.LoginTest">
+                <methods>
+                    <include name="testValidLogin"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <!-- Functional Test Suite -->
+    <test name="Functional Tests" parallel="methods" thread-count="3">
+        <classes>
+            <class name="com.playwright.tests.LoginTest"/>
+        </classes>
+    </test>
+
+</suite>

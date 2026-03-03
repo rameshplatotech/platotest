@@ -1,0 +1,2 @@
+searchbox: "xpath=//form[@role='search']//textarea"
+searchbtn: "css=input[name='btnK']"

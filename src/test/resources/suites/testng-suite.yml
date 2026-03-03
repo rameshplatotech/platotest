@@ -1,0 +1,40 @@
+# TestNG Suite Configuration using YAML
+suites:
+  - name: "Smoke Tests"
+    base_url: "https://example.com/login"
+    thread_count: 2
+    parallel: methods
+    tests:
+      - name: "Login Tests"
+        classes:
+          - LoginTest
+  
+  - name: "Functional Tests"
+    base_url: "https://example.com/login"
+    thread_count: 3
+    parallel: methods
+    tests:
+      - name: "Login and Dashboard Tests"
+        classes:
+          - LoginTest
+          - DashboardTest
+  
+  - name: "Regression Tests"
+    base_url: "https://example.com/login"
+    thread_count: 5
+    parallel: methods
+    tests:
+      - name: "All Tests"
+        classes:
+          - LoginTest
+          - DashboardTest
+          - SettingsTest
+
+  - name: "GoogleSearch"
+    base_url: "https://www.google.com/"
+    thread_count: 2
+    parallel: methods
+    tests:
+      - name: "Google Search Tests"
+        classes:
+          - GoogleSearchTest

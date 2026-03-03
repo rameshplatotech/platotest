@@ -1,0 +1,9 @@
+# Page config mapping: maps Page class simple name to locator and testdata paths
+BasePage:
+  locator: "locators/basepage.yml"
+  testdata: "testdata/basepage-en-data.yml"
+
+LoginPage:
+  locator: "locators/login.yml"
+  testdata: "testdata/login.yml"
+

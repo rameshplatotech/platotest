@@ -1,0 +1,17 @@
+.idea/
+target/
+*.class
+*.jar
+*.log
+logs/
+allure-results/
+allure-report/
+.DS_Store
+*.iml
+.vscode/
+*.swp
+*.swo
+*~
+.gradle/
+build/
+out/

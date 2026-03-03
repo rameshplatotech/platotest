@@ -1,0 +1,10 @@
+name: "Regression Tests"
+base_url: "https://example.com/login"
+thread_count: 5
+parallel: methods
+tests:
+  - name: "All Tests"
+    classes:
+      - LoginTest
+      - DashboardTest
+      - SettingsTest
