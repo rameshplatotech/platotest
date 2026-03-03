@@ -6,6 +6,7 @@ import com.playwright.utils.LoggerUtil;
 import io.qameta.allure.Step;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -27,6 +28,17 @@ public class BaseTest {
     protected Page page;
     protected LoggerUtil logger;
     protected String baseUrl;
+
+    @BeforeSuite(alwaysRun = true)
+    public void cleanTestNgReportResources() {
+        Path jquery = Paths.get("target/surefire-reports/jquery-3.6.0.min.js");
+        LoggerUtil suiteLogger = new LoggerUtil(BaseTest.class);
+        try {
+            Files.deleteIfExists(jquery);
+        } catch (IOException e) {
+            suiteLogger.warn("Could not clean TestNG reporter assets: " + e.getMessage());
+        }
+    }
 
     @BeforeMethod(alwaysRun = true)
     public void setup() {

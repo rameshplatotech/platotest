@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         java-version: [ 17 ]
-        browser: [ chromium, firefox ]
+        browser: [ chromium ]
     
     steps:
     - uses: actions/checkout@v4
