@@ -48,10 +48,6 @@ public class WebInput {
         return locator;
     }
 
-    public void type(String text) {
-        locator.type(text);
-    }
-
     public void press(String key) {
         locator.press(key);
     }

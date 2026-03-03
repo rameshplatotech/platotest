@@ -53,8 +53,9 @@ public class WebSelect {
         return locator.inputValue();
     }
 
+    @SuppressWarnings("unchecked")
     public List<String> getSelectedValues() {
-        return locator.selectOption();
+        return (List<String>) locator.evaluate("el => Array.from(el.selectedOptions, option => option.value)");
     }
 
     public void focus() {
