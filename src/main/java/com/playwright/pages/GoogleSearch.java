@@ -1,6 +1,8 @@
 package com.playwright.pages;
 
 import com.microsoft.playwright.Page;
+import com.playwright.elements.WebButton;
+import com.playwright.elements.WebInput;
 import com.playwright.framework.BasePage;
 
 /**
@@ -8,8 +10,8 @@ import com.playwright.framework.BasePage;
  */
 public class GoogleSearch extends BasePage {
 
-    private com.playwright.elements.WebInput searchbox;
-    private com.playwright.elements.WebButton searchbtn;
+    private WebInput searchbox;
+    private WebButton searchbtn;
     private String searchResults;
 
     public GoogleSearch(Page page) {

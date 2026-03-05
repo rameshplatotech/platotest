@@ -1,6 +1,7 @@
 package com.playwright.elements;
 
 import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.PlaywrightException;
 
 /**
  * Wrapper for radio buttons
@@ -13,11 +14,11 @@ public class WebRadio {
     }
 
     public void select() {
-        locator.check();
+        getEffectiveLocator().check();
     }
 
     public boolean isSelected() {
-        return locator.isChecked();
+        return getEffectiveLocator().isChecked();
     }
 
     /**
@@ -35,22 +36,46 @@ public class WebRadio {
     }
 
     public boolean isVisible() {
-        return locator.isVisible();
+        return getEffectiveLocator().isVisible();
     }
 
     public boolean isEnabled() {
-        return locator.isEnabled();
+        return getEffectiveLocator().isEnabled();
     }
 
     public void hover() {
-        locator.hover();
+        getEffectiveLocator().hover();
     }
 
     public void focus() {
-        locator.focus();
+        getEffectiveLocator().focus();
     }
 
     public void waitFor() {
-        locator.waitFor();
+        getEffectiveLocator().waitFor();
+    }
+
+    private Locator getEffectiveLocator() {
+        if (isLightningRadioGroup()) {
+            try {
+                Locator inner = locator.locator("input");
+                if (inner.count() > 0) {
+                    return inner.first();
+                }
+            } catch (PlaywrightException ignored) {
+                // fallback to root locator
+            }
+        }
+        return locator;
+    }
+
+    private boolean isLightningRadioGroup() {
+        try {
+            Object raw = locator.evaluate("el => el.tagName ? el.tagName.toLowerCase() : null");
+            String tagName = raw == null ? null : raw.toString();
+            return "lightning-radio-group".equals(tagName);
+        } catch (PlaywrightException e) {
+            return false;
+        }
     }
 }

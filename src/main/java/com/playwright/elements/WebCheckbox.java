@@ -1,6 +1,7 @@
 package com.playwright.elements;
 
 import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.PlaywrightException;
 
 /**
  * Wrapper for checkbox elements
@@ -13,22 +14,23 @@ public class WebCheckbox {
     }
 
     public void check() {
-        locator.check();
+        getEffectiveLocator().check();
     }
 
     public void uncheck() {
-        locator.uncheck();
+        getEffectiveLocator().uncheck();
     }
 
     public boolean isChecked() {
-        return locator.isChecked();
+        return getEffectiveLocator().isChecked();
     }
 
     public void toggle() {
-        if (locator.isChecked()) {
-            locator.uncheck();
+        Locator effective = getEffectiveLocator();
+        if (effective.isChecked()) {
+            effective.uncheck();
         } else {
-            locator.check();
+            effective.check();
         }
     }
 
@@ -47,26 +49,50 @@ public class WebCheckbox {
     }
 
     public boolean isVisible() {
-        return locator.isVisible();
+        return getEffectiveLocator().isVisible();
     }
 
     public boolean isHidden() {
-        return locator.isHidden();
+        return getEffectiveLocator().isHidden();
     }
 
     public boolean isEnabled() {
-        return locator.isEnabled();
+        return getEffectiveLocator().isEnabled();
     }
 
     public void focus() {
-        locator.focus();
+        getEffectiveLocator().focus();
     }
 
     public void hover() {
-        locator.hover();
+        getEffectiveLocator().hover();
     }
 
     public void waitFor() {
-        locator.waitFor();
+        getEffectiveLocator().waitFor();
+    }
+
+    private Locator getEffectiveLocator() {
+        if (isLightningCheckbox()) {
+            try {
+                Locator inner = locator.locator("input");
+                if (inner.count() > 0) {
+                    return inner.first();
+                }
+            } catch (PlaywrightException ignored) {
+                // fallback to root locator if inner input cannot be resolved
+            }
+        }
+        return locator;
+    }
+
+    private boolean isLightningCheckbox() {
+        try {
+            Object raw = locator.evaluate("el => el.tagName ? el.tagName.toLowerCase() : null");
+            String tagName = raw == null ? null : raw.toString();
+            return "lightning-checkbox".equals(tagName);
+        } catch (PlaywrightException e) {
+            return false;
+        }
     }
 }
