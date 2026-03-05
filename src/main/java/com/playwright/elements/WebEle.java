@@ -29,16 +29,6 @@ public class WebEle {
         return this;
     }
 
-    public WebEle fill(String text) {
-        locator.fill(text);
-        return this;
-    }
-
-    public WebEle type(String text) {
-        locator.type(text);
-        return this;
-    }
-
     public String getText() {
         return locator.textContent();
     }

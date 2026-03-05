@@ -1,6 +1,7 @@
 package com.playwright.elements;
 
 import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.PlaywrightException;
 
 /**
  * Wrapper for input-like elements (text fields, textareas)
@@ -13,25 +14,25 @@ public class WebInput {
     }
 
     public WebInput fill(String text) {
-        locator.fill(text);
+        getEffectiveLocator().fill(text);
         return this;
     }
 
     public WebInput clear() {
-        locator.fill("");
+        getEffectiveLocator().fill("");
         return this;
     }
 
     public String getValue() {
-        return locator.inputValue();
+        return getEffectiveLocator().inputValue();
     }
 
     public boolean isVisible() {
-        return locator.isVisible();
+        return getEffectiveLocator().isVisible();
     }
 
     public void pressEnter() {
-        locator.press("Enter");
+        getEffectiveLocator().press("Enter");
     }
 
     /**
@@ -49,22 +50,46 @@ public class WebInput {
     }
 
     public void press(String key) {
-        locator.press(key);
+        getEffectiveLocator().press(key);
     }
 
     public void focus() {
-        locator.focus();
+        getEffectiveLocator().focus();
     }
 
     public void hover() {
-        locator.hover();
+        getEffectiveLocator().hover();
     }
 
     public boolean isEnabled() {
-        return locator.isEnabled();
+        return getEffectiveLocator().isEnabled();
     }
 
     public void waitFor() {
-        locator.waitFor();
+        getEffectiveLocator().waitFor();
+    }
+
+    private Locator getEffectiveLocator() {
+        if (isLightningInput()) {
+            try {
+                Locator inner = locator.locator("input");
+                if (inner.count() > 0) {
+                    return inner.first();
+                }
+            } catch (PlaywrightException ignored) {
+                // fallback to root locator when inner input cannot be resolved
+            }
+        }
+        return locator;
+    }
+
+    private boolean isLightningInput() {
+        try {
+            Object raw = locator.evaluate("el => el.tagName ? el.tagName.toLowerCase() : null");
+            String tagName = raw == null ? null : raw.toString();
+            return "lightning-input".equals(tagName);
+        } catch (PlaywrightException e) {
+            return false;
+        }
     }
 }
