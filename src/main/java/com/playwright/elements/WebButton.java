@@ -1,6 +1,7 @@
 package com.playwright.elements;
 
 import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.PlaywrightException;
 
 /**
  * Wrapper for button elements with selective Playwright helpers
@@ -13,35 +14,35 @@ public class WebButton {
     }
 
     public void click() {
-        locator.click();
+        getEffectiveLocator().click();
     }
 
     public void doubleClick() {
-        locator.dblclick();
+        getEffectiveLocator().dblclick();
     }
 
     public boolean isEnabled() {
-        return locator.isEnabled();
+        return getEffectiveLocator().isEnabled();
     }
 
     public String getText() {
-        return locator.textContent();
+        return getEffectiveLocator().textContent();
     }
 
     public String getInnerText() {
-        return locator.innerText();
+        return getEffectiveLocator().innerText();
     }
 
     public void hover() {
-        locator.hover();
+        getEffectiveLocator().hover();
     }
 
     public void focus() {
-        locator.focus();
+        getEffectiveLocator().focus();
     }
 
     public void waitFor() {
-        locator.waitFor();
+        getEffectiveLocator().waitFor();
     }
 
     public String getAttribute(String name) {
@@ -60,5 +61,29 @@ public class WebButton {
      */
     public Locator getLocator() {
         return locator;
+    }
+
+    private Locator getEffectiveLocator() {
+        if (isLightningButton()) {
+            try {
+                Locator inner = locator.locator("button");
+                if (inner.count() > 0) {
+                    return inner.first();
+                }
+            } catch (PlaywrightException ignored) {
+                // fallback to the root locator if inner button is not reachable
+            }
+        }
+        return locator;
+    }
+
+    private boolean isLightningButton() {
+        try {
+            Object raw = locator.evaluate("el => el.tagName ? el.tagName.toLowerCase() : null");
+            String tagName = raw == null ? null : raw.toString();
+            return "lightning-button".equals(tagName);
+        } catch (PlaywrightException e) {
+            return false;
+        }
     }
 }
