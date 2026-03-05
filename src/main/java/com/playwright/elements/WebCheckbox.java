@@ -31,4 +31,42 @@ public class WebCheckbox {
             locator.check();
         }
     }
+
+    /**
+     * Access Playwright's nth helper for checkbox collections.
+     */
+    public WebCheckbox nth(int index) {
+        return new WebCheckbox(locator.nth(index));
+    }
+
+    /**
+     * Expose the raw Locator for advanced interactions.
+     */
+    public Locator getLocator() {
+        return locator;
+    }
+
+    public boolean isVisible() {
+        return locator.isVisible();
+    }
+
+    public boolean isHidden() {
+        return locator.isHidden();
+    }
+
+    public boolean isEnabled() {
+        return locator.isEnabled();
+    }
+
+    public void focus() {
+        locator.focus();
+    }
+
+    public void hover() {
+        locator.hover();
+    }
+
+    public void waitFor() {
+        locator.waitFor();
+    }
 }

@@ -231,6 +231,23 @@ The `.github/workflows/automation-tests.yml` file:
 - Generates Allure reports
 - Uploads artifacts
 
+## 🧠 CodeQL Security Scans
+
+A dedicated `codeql` job in `.github/workflows/automation-tests.yml` performs static code analysis with GitHub CodeQL. It:
+1. Checks out the repository and initializes the CodeQL database for Java
+2. Builds the project (`mvn -B -DskipTests package`) so the scanner can inspect compiled classes
+3. Runs `github/codeql-action/analyze@v4`, pushing alerts to the GitHub Security tab
+
+You don’t need to supply tokens—the job uses the GitHub Actions `security-events` permission. Browse the **Security → Code scanning alerts** tab after a run to see the findings.
+
+## 🐞 SpotBugs Static Analysis
+
+The `spotbugs` job runs after the tests (`mvn -B -DskipTests spotbugs:check`) and uploads the generated XML report so you can inspect the bug patterns in the workflow artifacts. SpotBugs uses the Maven plugin configured with `Max` effort and `Low` threshold to surface the most meaningful issues while still keeping the build green (`failOnError=false`).
+
+## 📐 Checkstyle Linting
+
+The new `checkstyle` job runs `mvn -B -DskipTests checkstyle:check` after the tests and uploads `target/checkstyle-result.xml`. The plugin uses Google’s `google_checks.xml` ruleset, covers both main and test sources, and writes the report under `target/` so you can download it from the workflow artifact when you want to review violations.
+
 ## 📚 Utility Classes
 
 ### YamlConfigLoader

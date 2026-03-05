@@ -18,14 +18,15 @@ public class GoogleSearch extends BasePage {
 
     public GoogleSearch enterSearch(String text) {
         if (searchbox != null) {
-            searchbox.fill(text);
+            searchbox.fill(text).pressEnter();
+            page.waitForLoadState();
         }
         return this;
     }
 
     public void clickSearchButton() {
         if (searchbtn != null) {
-            searchbtn.click();
+            searchbtn.nth(1).click();
         }
     }
 
