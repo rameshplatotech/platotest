@@ -21,6 +21,7 @@ public class BasePage {
     protected Page page;
     protected Map<String, Object> locators;
     protected LoggerUtil logger;
+    protected Map<String, Object> pageTestData;
 
     public BasePage(Page page, String pageName) {
         this.page = page;
@@ -51,6 +52,7 @@ public class BasePage {
         } else {
             pageTestData = YamlConfigLoader.loadTestData(pageName);
         }
+        this.pageTestData = pageTestData;
 
         // instantiate element wrappers for declared fields matching element types
         Class<?> cls = this.getClass();
@@ -78,13 +80,16 @@ public class BasePage {
                         instance = new WebRadio(locator);
                     } else if (WebCheckbox.class.equals(type)) {
                         instance = new WebCheckbox(locator);
+                    } else if (WebEle.class.equals(type)) {
+                        instance = new WebEle(locator);
                     }
 
                     if (instance != null) {
                         field.setAccessible(true);
                         field.set(this, instance);
                         // if there's a test-data entry for this element and it's an input, pre-fill it
-                        if (instance instanceof WebInput && pageTestData != null && pageTestData.containsKey(key)) {
+                        if (instance instanceof WebInput && pageTestData != null && pageTestData.containsKey(key)
+                                && shouldAutoFillInputsOnInit()) {
                             Object val = pageTestData.get(key);
                             if (val != null) {
                                 ((WebInput) instance).fill(val.toString());
@@ -123,6 +128,18 @@ public class BasePage {
                 cls2 = cls2.getSuperclass();
             }
         }
+    }
+
+    protected boolean shouldAutoFillInputsOnInit() {
+        return true;
+    }
+
+    protected String getTestDataValue(String key) {
+        if (pageTestData == null) {
+            return "";
+        }
+        Object value = pageTestData.get(key);
+        return value == null ? "" : value.toString();
     }
 
     private boolean requiresLocator(Class<?> fieldType) {

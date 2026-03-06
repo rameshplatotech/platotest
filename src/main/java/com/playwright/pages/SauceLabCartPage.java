@@ -27,7 +27,11 @@ public class SauceLabCartPage extends BasePage {
         super(page, "SauceLabCartPage");
     }
 
-    
+    @Override
+    protected boolean shouldAutoFillInputsOnInit() {
+        return false;
+    }
+
     @Step("Add gift card to cart")
     public void addGiftCardToCart() {
         logger.info("Scrolling to 'Add to Cart' button for the gift card");
@@ -38,11 +42,11 @@ public class SauceLabCartPage extends BasePage {
 
     @Step("Fill gift card details")
     public void fillGiftCardDetails() {
-        this.receipeintName.fill();
-        this.receipeintEmail.fill();
-        this.yourName.fill();
-        this.yourEmail.fill();
-        this.message.fill();
+        fillInputIfAvailable(receipeintName, "receipeintName");
+        fillInputIfAvailable(receipeintEmail, "receipeintEmail");
+        fillInputIfAvailable(yourName, "yourName");
+        fillInputIfAvailable(yourEmail, "yourEmail");
+        fillInputIfAvailable(message, "message");
         page.waitForTimeout(5000); // Wait for 5 seconds to ensure the details are filled before adding to cart
         addToFinalCart.click();
     }
@@ -60,5 +64,11 @@ public class SauceLabCartPage extends BasePage {
         softAssert.assertEquals(productName.getText(), productName.getValue(), "Product name in cart does not match expected.");
         return softAssert;
     }
-    
+
+    private void fillInputIfAvailable(WebInput input, String key) {
+        String value = getTestDataValue(key);
+        if (value != null && !value.isBlank()) {
+            input.fill(value);
+        }
+    }
 }

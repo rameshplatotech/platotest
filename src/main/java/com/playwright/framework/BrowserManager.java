@@ -2,6 +2,7 @@ package com.playwright.framework;
 
 import com.microsoft.playwright.*;
 import com.playwright.utils.LoggerUtil;
+import com.playwright.utils.ConfigManager;
 
 /**
  * Browser Manager class to handle browser initialization and management
@@ -13,8 +14,17 @@ public class BrowserManager {
     private static Page page;
     private static final LoggerUtil logger = new LoggerUtil(BrowserManager.class);
 
-    private static final String BROWSER_TYPE = System.getProperty("browser", "chromium");
-    private static final boolean HEADLESS = Boolean.parseBoolean(System.getProperty("headless", "true"));
+    private static final String BROWSER_TYPE = System.getProperty("browser", ConfigManager.getProperty("browser.type", "chromium"));
+    private static final boolean HEADLESS;
+
+    static {
+        String headlessProperty = System.getProperty("headless");
+        if (headlessProperty == null) {
+            HEADLESS = ConfigManager.getBooleanProperty("browser.headless", true);
+        } else {
+            HEADLESS = Boolean.parseBoolean(headlessProperty);
+        }
+    }
 
     /**
      * Initialize browser

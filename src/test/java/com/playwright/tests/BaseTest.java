@@ -77,7 +77,7 @@ public class BaseTest {
                 if (suiteFileProp != null && !suiteFileProp.isEmpty()) {
                     String path = suiteFileProp.endsWith(".yml") ? "suites/" + suiteFileProp : "suites/" + suiteFileProp + ".yml";
                     suiteCfg = com.playwright.utils.YamlConfigLoader.loadYamlFile(path);
-                } else {
+                } else if (resourceExists("suites/testng-suite.yml")) {
                     suiteCfg = com.playwright.utils.YamlConfigLoader.loadYamlFile("suites/testng-suite.yml");
                 }
 
@@ -182,5 +182,9 @@ public class BaseTest {
 
         String trimmed = suiteXmlFile.startsWith("/") ? suiteXmlFile.substring(1) : suiteXmlFile;
         return Thread.currentThread().getContextClassLoader().getResourceAsStream(trimmed);
+    }
+
+    protected boolean resourceExists(String resource) {
+        return Thread.currentThread().getContextClassLoader().getResource(resource) != null;
     }
 }
