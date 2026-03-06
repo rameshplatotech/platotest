@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Sauce Lab Suite" parallel="methods" thread-count="2" verbose="2">
+
+    <listeners>
+        <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+    </listeners>
+
+    <parameter name="base_url" value="https://demowebshop.tricentis.com/"/>
+
+    <test name="Sauce Lab Cart Tests" parallel="methods" thread-count="1">
+        <classes>
+            <class name="com.playwright.tests.SauceLabCartTest"/>
+        </classes>
+    </test>
+</suite>

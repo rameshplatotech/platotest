@@ -1,4 +1,9 @@
 # Page config mapping: maps Page class simple name to locator and testdata paths
-BasePage:
-  locator: "locators/basepage.yml"
-  testdata: "testdata/basepage-en-data.yml"
+
+GoogleSearchPage:
+  locator: "locators/googlesearchpage.yml"
+  testdata: "testdata/googlesearchpage-en-data.yml"
+
+SauceLabCartPage:
+  locator: "locators/saucelabcartpage.yml"
+  testdata: "testdata/saucelabcartpage-en-data.yml"

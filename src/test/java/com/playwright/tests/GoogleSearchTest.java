@@ -1,6 +1,6 @@
 package com.playwright.tests;
 
-import com.playwright.pages.GoogleSearch;
+import com.playwright.pages.GoogleSearchPage;
 import org.testng.annotations.Test;
 import static org.assertj.core.api.Assertions.*;
 
@@ -11,7 +11,7 @@ public class GoogleSearchTest extends BaseTest {
         logger.info("Test: testGoogleSearch started");
 
         // BaseTest.setup() navigates to suite base_url (Google)
-        GoogleSearch gs = new GoogleSearch(page);
+        GoogleSearchPage gs = new GoogleSearchPage(page);
         gs.enterSearch("playwright java");
         //gs.clickSearchButton();
 

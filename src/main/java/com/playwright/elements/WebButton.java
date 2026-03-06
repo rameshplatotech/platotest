@@ -45,6 +45,10 @@ public class WebButton {
         getEffectiveLocator().waitFor();
     }
 
+    public void scrollIntoView() {
+        getEffectiveLocator().scrollIntoViewIfNeeded();
+    }
+
     public String getAttribute(String name) {
         return locator.getAttribute(name);
     }

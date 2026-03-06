@@ -38,6 +38,21 @@ public class BaseTest {
         } catch (IOException e) {
             suiteLogger.warn("Could not clean TestNG reporter assets: " + e.getMessage());
         }
+
+        Path reportsDir = Paths.get("target/surefire-reports");
+        if (Files.exists(reportsDir)) {
+            try (java.util.stream.Stream<Path> walk = java.nio.file.Files.walk(reportsDir)) {
+                walk.sorted(java.util.Comparator.reverseOrder()).forEach(path -> {
+                    try {
+                        Files.deleteIfExists(path);
+                    } catch (IOException ex) {
+                        suiteLogger.warn("Unable to delete reporter artifact " + path + " - " + ex.getMessage());
+                    }
+                });
+            } catch (IOException e) {
+                suiteLogger.warn("Could not delete stale TestNG reports: " + e.getMessage());
+            }
+        }
     }
 
     @BeforeMethod(alwaysRun = true)

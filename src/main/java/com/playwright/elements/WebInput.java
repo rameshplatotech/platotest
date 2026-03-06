@@ -18,6 +18,13 @@ public class WebInput {
         return this;
     }
 
+    /**
+     * Fill using the current value from the locator (e.g., lightning-input).
+     */
+    public WebInput fill() {
+        return fill(getValue());
+    }
+
     public WebInput clear() {
         getEffectiveLocator().fill("");
         return this;

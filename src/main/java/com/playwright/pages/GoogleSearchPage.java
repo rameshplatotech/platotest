@@ -8,17 +8,17 @@ import com.playwright.framework.BasePage;
 /**
  * Google Search page (minimal) — demonstrates dynamic wiring
  */
-public class GoogleSearch extends BasePage {
+public class GoogleSearchPage extends BasePage {
 
     private WebInput searchbox;
     private WebButton searchbtn;
     private String searchResults;
 
-    public GoogleSearch(Page page) {
+    public GoogleSearchPage(Page page) {
         super(page, "GoogleSearch");
     }
 
-    public GoogleSearch enterSearch(String text) {
+    public GoogleSearchPage enterSearch(String text) {
         if (searchbox != null) {
             searchbox.fill(text).pressEnter();
             page.waitForLoadState();

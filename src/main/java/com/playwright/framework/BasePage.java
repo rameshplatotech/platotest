@@ -9,6 +9,7 @@ import com.playwright.elements.WebButton;
 import com.playwright.elements.WebSelect;
 import com.playwright.elements.WebRadio;
 import com.playwright.elements.WebCheckbox;
+import com.playwright.elements.WebEle;
 import java.lang.reflect.Field;
 import java.util.Map;
 
@@ -60,6 +61,9 @@ public class BasePage {
                     String key = field.getName();
                     Object locatorValue = this.locators.get(key);
                     if (locatorValue == null) {
+                        if (requiresLocator(type)) {
+                            throw new RuntimeException("Locator missing for field '" + key + "' in page '" + this.getClass().getSimpleName() + "'");
+                        }
                         continue;
                     }
                     Locator locator = page.locator(locatorValue.toString());
@@ -119,6 +123,15 @@ public class BasePage {
                 cls2 = cls2.getSuperclass();
             }
         }
+    }
+
+    private boolean requiresLocator(Class<?> fieldType) {
+        return WebInput.class.equals(fieldType)
+                || WebButton.class.equals(fieldType)
+                || WebSelect.class.equals(fieldType)
+                || WebRadio.class.equals(fieldType)
+                || WebCheckbox.class.equals(fieldType)
+                || WebEle.class.equals(fieldType);
     }
 
     /**
